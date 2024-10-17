@@ -5,7 +5,7 @@ public partial class Game : Node2D
 {
 	// Game 
 	private int CurrentWave = 1;
-	private bool IsGamePaused = false;
+	public bool IsGamePaused = false;
 
 	// Game Stats
 	public int EnemyKilled = 0;
@@ -26,10 +26,34 @@ public partial class Game : Node2D
 	// Other
 	private Vector2 ScreenSize { get => GetViewportRect().Size; }
 	private RandomNumberGenerator Random = new RandomNumberGenerator();
+	public Player Player => GetNode<Player>("Player");
+	public Shop Shop => GetNode<Shop>("Shop");
+	public DeathMenu DeathMenu => GetNode<DeathMenu>("Death");
+
+	// Shop Percent
+	public int speedBonus = 0;
+	public int bulletDamageBonus = 0;
+
+	public override void _Ready()
+	{
+		Shop.Hide();
+		DeathMenu.Hide();
+	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (Player.Health <= 10f)
+			return;
+		if(!IsGamePaused && Input.IsActionJustPressed("openshop"))
+		{
+			Shop.Show();
+			IsGamePaused = true;
+		} else if(IsGamePaused && Input.IsActionJustPressed("openshop")) {
+			Shop.Hide();
+			IsGamePaused = false;
+		}
+
 		if (IsGamePaused)
 			return;
 		TrySpawnEnemy();

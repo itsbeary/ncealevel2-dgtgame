@@ -14,14 +14,18 @@ public partial class Player : CharacterBody2D
 	private PackedScene BulletScene = (PackedScene) ResourceLoader.Load("res://scenes/bullet.tscn");
 	private Marker2D WeaponMarker { get => GetNode<Marker2D>("Marker2D"); }
 
+	private Game Game => (Game)GetParent();
+
 
 	// Other
 	private Vector2 ScreenSize { get => GetViewportRect().Size; }
-	private float Health = 100f;
+	public float Health { get; private set; } = 100f;
 
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (Game.IsGamePaused)
+			return;
 		// Input / Movement
 		MovePlayer();
 		RotatePlayer();
@@ -62,8 +66,12 @@ public partial class Player : CharacterBody2D
 	public void DamagePlayer()
 	{
 		Health -= 10f;
-		if (Health <= 0f)
-			GetTree().Quit();
+		if (Health <= 10f)
+		{
+			Game.DeathMenu.Show();
+			Game.IsGamePaused = true;
+		}
+			
 	}
 
 	private void RotatePlayer()

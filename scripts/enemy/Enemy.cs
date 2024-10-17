@@ -12,9 +12,15 @@ public partial class Enemy : Area2D
 	public float Speed = 100f;
 	private float Health = 100f;
 	public bool IsLarge = false;
+	private Game Game => (Game)GetParent();
+
+
+	public int bulletDamage = 50;
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (Game.IsGamePaused)
+			return;
 		if(Position.DistanceTo(Player.Position) > 325) {
 			AnimatedSprite.Play("idle");
 			Velocity = (Player.GlobalPosition - Position).Normalized() * Speed;
@@ -30,7 +36,7 @@ public partial class Enemy : Area2D
 
 	public void Kill()
 	{
-		Health -= !IsLarge ? 60f : 30f;
+		Health -= bulletDamage + (bulletDamage * (Game.bulletDamageBonus / 100));
 		if (Health > 0f)
 			return;
 		var particle = (DeathParticle)DeathParticle.Instantiate();
@@ -44,6 +50,8 @@ public partial class Enemy : Area2D
 
 	public void _on_body_entered(Node2D body)
 	{
+		if (Game.IsGamePaused)
+			return;
 		if (body.Equals(Player)) { 
 			Player.DamagePlayer();
 			Kill();

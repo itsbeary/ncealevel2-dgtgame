@@ -1,0 +1,102 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbqu2lenmh1xa"]
+
+[ext_resource type="Script" path="res://scripts/menu/main/MainMenu.cs" id="1_xj3qe"]
+[ext_resource type="Texture2D" uid="uid://c07ulauuiubbn" path="res://assets/main_menu_background.png" id="2_pbk1u"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vdfqj"]
+line_spacing = 32.0
+font_size = 64
+shadow_size = 32
+shadow_color = Color(0.25098, 0, 0, 0.658824)
+shadow_offset = Vector2(8, 8)
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_xj3qe")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.333333
+anchor_top = -0.333333
+anchor_right = 0.657992
+anchor_bottom = 0.665252
+offset_left = 384.0
+offset_top = 216.0
+offset_right = 393.994
+offset_bottom = 216.917
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.594795, 0.599151)
+texture = ExtResource("2_pbk1u")
+metadata/_edit_use_anchors_ = true
+
+[node name="Play" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = -84.0
+offset_right = 82.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play Game"
+
+[node name="Quit" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.460938
+anchor_top = 0.466049
+anchor_right = 0.540799
+anchor_bottom = 0.513889
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit Game
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="Tip" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -339.0
+offset_top = 288.0
+offset_right = 343.0
+offset_bottom = 311.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "To pause the game or purchase upgrades. Pressing 'TAB' will open the pause/shop menu"
+horizontal_alignment = 1
+
+[node name="Game Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = -231.0
+offset_right = 101.0
+offset_bottom = -143.0
+grow_horizontal = 2
+text = "Game!"
+label_settings = SubResource("LabelSettings_vdfqj")
+uppercase = true
+
+[connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
