@@ -16,4 +16,12 @@ public partial class Bullet : Area2D
 			QueueFree();
 
 	}
+	public void _on_area_entered(Area2D area)
+	{
+		Enemy enemy = (Enemy)area;
+		if (enemy == null)
+			return;
+		GD.Print(((Game)GetParent()).EnemyKilled++);
+		enemy.Kill();
+	}
 }

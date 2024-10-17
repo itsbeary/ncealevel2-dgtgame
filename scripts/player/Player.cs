@@ -9,15 +9,15 @@ public partial class Player : CharacterBody2D
 
 	// Weapon
 	[Export, ExportCategory("Weapon")]
-	public float CanShootDelay { get; set; } = 0.6f;
+	public float CanShootDelay { get; set; } = 0.2f;
 	private double TimeSinceShot = Time.GetUnixTimeFromSystem();
 	private PackedScene BulletScene = (PackedScene) ResourceLoader.Load("res://scenes/bullet.tscn");
 	private Marker2D WeaponMarker { get => GetNode<Marker2D>("Marker2D"); }
 
 
 	// Other
-	private float Health { get; set; } = 100f;
 	private Vector2 ScreenSize { get => GetViewportRect().Size; }
+	private float Health = 100f;
 
 
 	public override void _PhysicsProcess(double delta)
@@ -62,10 +62,8 @@ public partial class Player : CharacterBody2D
 	public void DamagePlayer()
 	{
 		Health -= 10f;
-		if(Health <= 0f)
-		{
-			// run death logic
-		}
+		if (Health <= 0f)
+			GetTree().Quit();
 	}
 
 	private void RotatePlayer()

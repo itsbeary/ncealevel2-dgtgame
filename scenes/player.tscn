@@ -39,6 +39,7 @@ animations = [{
 size = Vector2(49, 53)
 
 [node name="Player" type="CharacterBody2D"]
+position = Vector2(-9, 14)
 scale = Vector2(2, 2)
 script = ExtResource("1_w17tt")
 

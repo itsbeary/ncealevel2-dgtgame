@@ -3,12 +3,15 @@ using System;
 
 public partial class Enemy : Area2D
 {
-	public Node2D Player => GetNode<Node2D>("../Player");
+	public Player Player => GetNode<Player>("../Player");
 	public AnimatedSprite2D AnimatedSprite => GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 	public Vector2 Velocity = Vector2.Zero;
 
-	private float Speed = 100f;
+	public PackedScene DeathParticle = (PackedScene)ResourceLoader.Load("res://scenes/deathparticle.tscn");
+
+	public float Speed = 100f;
 	private float Health = 100f;
+	public bool IsLarge = false;
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -24,10 +27,26 @@ public partial class Enemy : Area2D
 		LookAt(Player.GlobalPosition);
 		Rotate(160);
 	}
+
+	public void Kill()
+	{
+		Health -= !IsLarge ? 60f : 30f;
+		if (Health > 0f)
+			return;
+		var particle = (DeathParticle)DeathParticle.Instantiate();
+		GetParent().AddChild(particle);
+		particle.Position = GlobalPosition;
+		particle.Emitting = true;
+		particle.hasPlayed = true;
+		((Game)GetParent()).Balance += 10;
+		QueueFree();
+	}
+
 	public void _on_body_entered(Node2D body)
 	{
-		if (body.Equals(Player))
-			GD.Print("player was attacked by " + Name);
-		GD.Print($"Body entered: {body.Name}");
+		if (body.Equals(Player)) { 
+			Player.DamagePlayer();
+			Kill();
+		}
 	}
 }

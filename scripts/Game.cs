@@ -8,10 +8,11 @@ public partial class Game : Node2D
 	private bool IsGamePaused = false;
 
 	// Game Stats
-	private int EnemyKilled = 0;
+	public int EnemyKilled = 0;
+	public int Balance = 0;
 
 	// Enemy Spawning
-	public float SpawnEnemyDelay = 0.5f;
+	private float SpawnEnemyDelay = 0.5f;
 	private double TimeSinceEnemySpawn = Time.GetUnixTimeFromSystem();
 	private Vector2[] EnemySpawns => new Vector2[4]
 	{
@@ -38,10 +39,16 @@ public partial class Game : Node2D
 		if (Time.GetUnixTimeFromSystem() - TimeSinceEnemySpawn < SpawnEnemyDelay)
 			return;
 
-		Node2D enemy = (Node2D)EnemyScene.Instantiate();
+		Enemy enemy = (Enemy)EnemyScene.Instantiate();
 		enemy.Name = "Enemy - " + Random.Randi();
 		AddChild(enemy);
 		enemy.Position = EnemySpawns[Random.RandiRange(0, 3)];
 		TimeSinceEnemySpawn = Time.GetUnixTimeFromSystem();
+		if(Random.Randf() <= 0.05f)
+		{
+			enemy.Scale *= 2.5f;
+			enemy.Speed *= 2.5f;
+			enemy.IsLarge = true;
+		}
 	}
 }

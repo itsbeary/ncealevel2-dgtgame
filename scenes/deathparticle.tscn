@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://cawlrk6q56xv6"]
+
+[ext_resource type="Script" path="res://scripts/DeathParticle.cs" id="1_agkxq"]
+
+[node name="CPUParticles2D" type="CPUParticles2D"]
+emitting = false
+amount = 500
+lifetime = 6.0
+one_shot = true
+speed_scale = 10.0
+explosiveness = 1.0
+randomness = 1.0
+lifetime_randomness = 0.49
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector2(1, 1)
+spread = 180.0
+gravity = Vector2(0, 0)
+radial_accel_max = 20.62
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color = Color(0.605915, 0.0185084, 0.0956845, 1)
+script = ExtResource("1_agkxq")
