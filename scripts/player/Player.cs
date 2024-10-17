@@ -2,11 +2,22 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
-	[Export]
+	// Movement
+	[Export, ExportCategory("Movement")]
 	public float Speed { get; set; } = 400f;
+	private AnimatedSprite2D AnimatedSprite { get => GetNode<AnimatedSprite2D>("AnimatedSprite2D"); }
 
-	public Vector2 ScreenSize { get => GetViewportRect().Size; }
-	public AnimatedSprite2D AnimatedSprite { get => GetNode<AnimatedSprite2D>("AnimatedSprite2D"); }
+	// Weapon
+	[Export, ExportCategory("Weapon")]
+	public float CanShootDelay { get; set; } = 0.6f;
+	private double TimeSinceShot = Time.GetUnixTimeFromSystem();
+	private PackedScene BulletScene = (PackedScene) ResourceLoader.Load("res://scenes/bullet.tscn");
+	private Marker2D WeaponMarker { get => GetNode<Marker2D>("Marker2D"); }
+
+
+	// Other
+	private float Health { get; set; } = 100f;
+	private Vector2 ScreenSize { get => GetViewportRect().Size; }
 
 
 	public override void _PhysicsProcess(double delta)
@@ -17,6 +28,9 @@ public partial class Player : CharacterBody2D
 		ClampToBounds();
 		// Animation
 		PlayAnimation();
+
+		// Gun
+		Shoot();
 	}
 
 	private void MovePlayer()
@@ -30,6 +44,28 @@ public partial class Player : CharacterBody2D
 		if (Velocity.IsZeroApprox())
 			AnimatedSprite.Play("idle");
 		else AnimatedSprite.Play("fly");
+	}
+
+	private void Shoot()
+	{
+		if (!Input.IsActionJustPressed("attack1") || (Time.GetUnixTimeFromSystem() - TimeSinceShot) < CanShootDelay)
+			return;
+		TimeSinceShot = Time.GetUnixTimeFromSystem();
+
+		Bullet bullet = (Bullet) BulletScene.Instantiate();
+		GetParent().AddChild(bullet);
+		bullet.Rotation = Rotation;
+		bullet.Position = WeaponMarker.GlobalPosition;
+		bullet.Velocity = -GlobalTransform.Y.Normalized();
+	}
+
+	public void DamagePlayer()
+	{
+		Health -= 10f;
+		if(Health <= 0f)
+		{
+			// run death logic
+		}
 	}
 
 	private void RotatePlayer()

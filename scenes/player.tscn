@@ -49,3 +49,6 @@ animation = &"fly"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_8fxln")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, -32)
